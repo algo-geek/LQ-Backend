@@ -12,7 +12,10 @@ urlpatterns = [
     # social media urls start here
 
     path('socialmedia/all-posts/', views.all_posts, name="all_posts"),
-    path('socialmedia/all-happies/', views.all_happies, name="all_happies")
+    path('socialmedia/all-happies/', views.all_happies, name="all_happies"),
+    path('socialmedia/add-post/', views.add_post, name="add_post"),
+    path('socialmedia/add-happy/', views.add_happy, name="add_happy"),
+    path('socialmedia/modify-post/<int:id>/',views.modify_post, name="modify_post"),
 
     # social medial urls end here
 ]

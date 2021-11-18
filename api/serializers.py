@@ -33,14 +33,15 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SocialMediaPostSerializer(serializers.ModelSerializer):
+    # profile = ProfileSerializer()
     class Meta:
         model = SocialMediaPost
         fields = '__all__'
-        depth = 1
+        # depth = 1
 
 
 class HappySerializer(serializers.ModelSerializer):
     class Meta:
         model = Happy
         fields = '__all__'
-        depth = 1
+        # depth = 1
