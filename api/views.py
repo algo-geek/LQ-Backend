@@ -4,11 +4,13 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 from . models import (
     Profile, 
-    SocialMediaPost
+    SocialMediaPost,
+    Happy
 )
 from . serializers import (
     ProfileSerializer,
-    SocialMediaPostSerializer
+    SocialMediaPostSerializer,
+    HappySerializer
 )
 
 # Create your views here.
@@ -32,6 +34,16 @@ def all_posts(request):
     posts = SocialMediaPost.objects.all()
     serializer = SocialMediaPostSerializer(posts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+def all_happies(request):
+    happies = Happy.objects.all()
+    serializer = HappySerializer(happies, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
 
 # socila media views end here
 

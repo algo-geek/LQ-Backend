@@ -27,6 +27,16 @@ class SocialMediaPost(models.Model):
         return "post from :" + str(self.profile.user.username) + " body : " + str(self.body) 
 
 
+class Happy(models.Model):
+    post = models.ForeignKey(SocialMediaPost, on_delete=models.CASCADE)
+    origin = models.ForeignKey(Profile, on_delete = models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "like of : " + str(self.post.body) + " from : " + str(self.origin.user.username)
+
+
+
 
 
 
