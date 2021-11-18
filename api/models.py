@@ -13,6 +13,30 @@ class Profile(models.Model):
 
 
 
+# social media part starts here
+
+
+class SocialMediaPost(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    body = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    # image = models.ImageField(upload_to = 'sm_posts/')
+    # others --->
+
+    def __str__(self):
+        return "post from :" + str(self.profile.user.username) + " body : " + str(self.body) 
+
+
+
+
+
+
+
+
+# social media part ends here
+
+
+
 
 
 
