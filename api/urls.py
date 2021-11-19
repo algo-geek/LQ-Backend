@@ -18,4 +18,14 @@ urlpatterns = [
     path('socialmedia/modify-post/<int:id>/',views.modify_post, name="modify_post"),
 
     # social medial urls end here
+
+
+    # learning portal urls start here 
+    
+    path('news/', views.news, name="news"),
+    path('laws/', views.laws, name="laws"),
+    path('unaware/', views.unaware, name="unaware"),
+    path('sub_category/', views.sub_category, name="sub_category"),
+
+    # learning portal urls end here 
 ]

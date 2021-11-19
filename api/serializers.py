@@ -3,7 +3,11 @@ from rest_framework import serializers
 from . models import (
     Profile,
     SocialMediaPost,
-    Happy
+    Happy,
+    News,
+    Laws,
+    Category,
+    Sub_Category
 )
 
 from django.contrib.auth.models import User
@@ -45,3 +49,35 @@ class HappySerializer(serializers.ModelSerializer):
         model = Happy
         fields = '__all__'
         # depth = 1
+
+
+class NewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = '__all__'
+        # depth = 1
+
+class LawsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Laws
+        fields = '__all__'
+        # depth = 1       
+
+
+class Sub_CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sub_Category
+        fields = '__all__'
+        # depth = 1 
+        
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    sub_category = Sub_CategorySerializer(many=True)
+
+    class Meta:
+        model = Category
+        fields = '__all__'
+        # depth = 1 
+
+
