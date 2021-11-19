@@ -4,15 +4,23 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from . models import (
+    News,
     Profile, 
     SocialMediaPost,
-    Happy
+    Happy,
+    Laws,
+    Category,
+    Sub_Category
 )
 from . serializers import (
     ProfileSerializer,
     SocialMediaPostSerializer,
     HappySerializer,
-    UserSerializer
+    UserSerializer,
+    NewsSerializer,
+    LawsSerializer,
+    CategorySerializer,
+    Sub_CategorySerializer
 )
 from django.contrib.auth.models import User
 import json
@@ -151,13 +159,39 @@ def add_happy(request):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
-
-    
-
-
 # socila media views end here
+
+
+@api_view(['GET'])
+
+def news(request):
+    news = News.objects.all()
+    serializer = NewsSerializer(news, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+
+def laws(request):
+    laws = Laws.objects.all()
+    serializer = LawsSerializer(laws, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)    
+
+
+@api_view(['GET'])
+
+def unaware(request):
+    category = Category.objects.all()
+    serializer = CategorySerializer(category, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK) 
+
+
+@api_view(['GET'])
+
+def sub_category(request):
+    sub_category = Sub_Category.objects.all()
+    serializer = Sub_CategorySerializer(sub_category, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK) 
+
 
     

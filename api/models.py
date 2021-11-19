@@ -37,13 +37,43 @@ class Happy(models.Model):
 
 
 
-
-
-
-
-
-
 # social media part ends here
+
+class News(models.Model):
+    headline = models.CharField(max_length=300)
+    content = models.TextField()
+
+    def __str__(self):
+        return "headline : " + str(self.headline) + " content : " + str(self.content) 
+
+
+class Laws(models.Model):
+    law = models.CharField(max_length=300)
+    des = models.TextField()
+
+    def __str__(self):
+        return "law : " + str(self.law) + " des : " + str(self.des)        
+
+
+class Sub_Category(models.Model):
+    sub_category = models.CharField(max_length=100)
+    sub_category_des = models.TextField()
+
+    def __str__(self):
+        return " sub_category : " + str(self.sub_category) + " sub_category_description : " + str(self.sub_category_des) 
+
+
+class Category(models.Model):
+    category_name = models.CharField(max_length=100)
+    category_des = models.TextField()
+    sub_category = models.ManyToManyField(Sub_Category, related_name="subcategory")
+
+    def __str__(self):
+        return " category_name : " + str(self.category_name) + " category_description : " + str(self.category_des) 
+         
+
+
+
 
 
 
