@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
 from . models import (
     Profile,
@@ -7,7 +8,8 @@ from . models import (
     News,
     Laws,
     Category,
-    Sub_Category
+    Sub_Category,
+    Comment,
 )
 
 from django.contrib.auth.models import User
@@ -33,15 +35,55 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    prof_username = serializers.SerializerMethodField("get_username")
+    def get_username(self,obj):
+        prof =  obj.origin
+        return prof.user.username
+    class Meta:
+        model = Comment
+        fields = '__all__'
 
 
 
 class SocialMediaPostSerializer(serializers.ModelSerializer):
     # profile = ProfileSerializer()
+    prof_username = serializers.SerializerMethodField("get_username")
+    happies_count = serializers.SerializerMethodField("get_happies_count")
+    happy_profs = serializers.SerializerMethodField("get_happy_profs")
+    comments = serializers.SerializerMethodField("get_comments")
+    comments_count = serializers.SerializerMethodField("get_comments_count")
+
+    def get_happies_count(self,obj):
+        happies_count = len(obj.happy_set.all())
+        return happies_count
+    
+    def get_comments_count(self,obj):
+        comments_count = len(obj.comment_set.all())
+        return comments_count
+
+    def get_username(self,obj):
+        prof =  obj.profile
+        return prof.user.username
+    
+    def get_happy_profs(self, obj):
+        li =[]
+        for i in obj.happy_set.all():
+            token = Token.objects.get(user =i.origin.user)
+            li.append(token.key)
+        return li
+    def get_comments(self, obj):
+        all_comments = obj.comment_set.all().order_by('-timestamp')
+        serializer = CommentSerializer(all_comments, many=True)
+        return serializer.data
+
     class Meta:
         model = SocialMediaPost
         fields = '__all__'
         # depth = 1
+
+
+
 
 
 class HappySerializer(serializers.ModelSerializer):

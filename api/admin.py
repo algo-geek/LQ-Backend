@@ -6,7 +6,8 @@ from . models import (
     News,
     Laws,
     Category,
-    Sub_Category
+    Sub_Category,
+    Comment,
 )
 
 # Register your models here.
@@ -17,3 +18,4 @@ admin.site.register(News)
 admin.site.register(Laws)
 admin.site.register(Category)
 admin.site.register(Sub_Category)
+admin.site.register(Comment)

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 from . models import (
     News,
     Profile, 
@@ -10,7 +11,8 @@ from . models import (
     Happy,
     Laws,
     Category,
-    Sub_Category
+    Sub_Category,
+    Comment,
 )
 from . serializers import (
     ProfileSerializer,
@@ -20,7 +22,8 @@ from . serializers import (
     NewsSerializer,
     LawsSerializer,
     CategorySerializer,
-    Sub_CategorySerializer
+    Sub_CategorySerializer,
+    CommentSerializer
 )
 from django.contrib.auth.models import User
 import json
@@ -42,7 +45,7 @@ def register_user(request):
     data = request.data
 
     serializer = UserSerializer(data=data)
-    # print(data)
+    print(data)
 
     user = User.objects.filter(username = data['username'])
 
@@ -54,10 +57,13 @@ def register_user(request):
         print(serializer.data)
         user_obj = get_object_or_404(User, id = serializer.data['id'])
         profile = get_object_or_404(Profile, user=user_obj)
-        profile.pride_community = json.loads(data['pride_community'])
+        profile.pride_community =data['pride_community']
         profile.save()
         print(profile)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        token = get_object_or_404(Token, user = user_obj)
+        print(token)
+
+        return Response({"serializer_data":serializer.data, "token":token.key}, status=status.HTTP_201_CREATED)
     else:
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -66,10 +72,12 @@ def register_user(request):
 # social media views start here
 
 @api_view(['GET'])
-
 def all_posts(request):
     posts = SocialMediaPost.objects.all()
     serializer = SocialMediaPostSerializer(posts, many=True)
+    for post in serializer.data:
+        print(post)
+
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -133,6 +141,7 @@ def modify_post(request, id):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def all_happies(request):
     happies = Happy.objects.all()
     serializer = HappySerializer(happies, many=True)
@@ -146,9 +155,17 @@ def add_happy(request):
 
     user_obj = request.user
     prof_obj = user_obj.profile
+    print("hello :")
     print(user_obj)
     data = request.data
+    print(data)
     data['origin']= prof_obj.id
+    post = get_object_or_404(SocialMediaPost, id = data['post'])
+    happy_obj = Happy.objects.filter(post=post, origin = prof_obj)
+    if happy_obj:
+        happy_obj.delete()
+        return Response({"message": "already liked"}, status=status.HTTP_202_ACCEPTED)
+
     serializer = HappySerializer(data = data)
 
     if serializer.is_valid():
@@ -159,11 +176,38 @@ def add_happy(request):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 
+
+
+@api_view(['GET'])
+def comments(request):
+    comments = Comment.objects.all()
+    serializer = CommentSerializer(comments, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_comment(request):
+    data = request.data
+    user_obj = request.user
+    prof_obj = user_obj.profile
+    data['origin']= prof_obj.id
+    serializer = CommentSerializer(data = data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+
+
 # socila media views end here
 
 
 @api_view(['GET'])
-
 def news(request):
     news = News.objects.all()
     serializer = NewsSerializer(news, many=True)
@@ -171,7 +215,6 @@ def news(request):
 
 
 @api_view(['GET'])
-
 def laws(request):
     laws = Laws.objects.all()
     serializer = LawsSerializer(laws, many=True)
@@ -179,7 +222,6 @@ def laws(request):
 
 
 @api_view(['GET'])
-
 def unaware(request):
     category = Category.objects.all()
     serializer = CategorySerializer(category, many=True)
@@ -187,11 +229,17 @@ def unaware(request):
 
 
 @api_view(['GET'])
-
 def sub_category(request):
     sub_category = Sub_Category.objects.all()
     serializer = Sub_CategorySerializer(sub_category, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK) 
+
+
+
+
+
+
+
 
 
     

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
 
     # 3rd party
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,5 @@ REST_FRAMEWORK = {
        'rest_framework.authentication.TokenAuthentication',
    ),
 }
+
+CORS_ORIGIN_ALLOW_ALL = True

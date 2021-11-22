@@ -36,6 +36,18 @@ class Happy(models.Model):
         return "like of : " + str(self.post.body) + " from : " + str(self.origin.user.username)
 
 
+class Comment(models.Model):
+    post = models.ForeignKey(SocialMediaPost, on_delete=models.CASCADE)
+    body = models.TextField()
+    origin = models.ForeignKey(Profile, on_delete= models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "Comment of :" + str(self.post.body) + " from : " + str(self.origin.user.username)
+
+
+
+
 
 # social media part ends here
 

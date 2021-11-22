@@ -16,6 +16,8 @@ urlpatterns = [
     path('socialmedia/add-post/', views.add_post, name="add_post"),
     path('socialmedia/add-happy/', views.add_happy, name="add_happy"),
     path('socialmedia/modify-post/<int:id>/',views.modify_post, name="modify_post"),
+    path('socialmedia/comments/', views.comments, name="comments"),
+    path('socialmedia/add-comment/', views.add_comment, name="add_comment"),
 
     # social medial urls end here
 
