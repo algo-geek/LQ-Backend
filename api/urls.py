@@ -34,7 +34,10 @@ urlpatterns = [
 
 
     # job portal starts here
-    path('job-portal/all-jobs/', views.all_jobs, name="all_jobs")
+    path('job-portal/all-jobs/', views.all_jobs, name="all_jobs"),
+    path('job-portal/filtered-jobs/<str:category>/', views.filtered_jobs, name="filtered_jobs"),
+    path("job-portal/job/<int:id>/", views.job, name="job"),
+    path('job-portal/job-categories/', views.job_categories, name="job_categories"),
 
     # job portal ends here
 ]

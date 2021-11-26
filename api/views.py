@@ -248,6 +248,27 @@ def all_jobs(request):
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def filtered_jobs(request,category):
+    category_obj = get_object_or_404(JobCategory, name=category)
+    jobs = Job.objects.filter(category=category_obj)
+    serializer = JobSerializer(jobs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+def job(request, id):
+    job = get_object_or_404(Job, id=id)
+    serializer = JobSerializer(job)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def job_categories(request):
+    categories = JobCategory.objects.all()
+    serializer = JobCategorySerializer(categories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 
