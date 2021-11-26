@@ -13,6 +13,8 @@ from . models import (
     Category,
     Sub_Category,
     Comment,
+    Job,
+    JobCategory
 )
 from . serializers import (
     ProfileSerializer,
@@ -23,7 +25,9 @@ from . serializers import (
     LawsSerializer,
     CategorySerializer,
     Sub_CategorySerializer,
-    CommentSerializer
+    CommentSerializer,
+    JobSerializer,
+    JobCategorySerializer
 )
 from django.contrib.auth.models import User
 import json
@@ -233,6 +237,16 @@ def sub_category(request):
     sub_category = Sub_Category.objects.all()
     serializer = Sub_CategorySerializer(sub_category, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK) 
+
+
+
+
+@api_view(['GET'])
+def all_jobs(request):
+    jobs = Job.objects.all()
+    serializer = JobSerializer(jobs, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

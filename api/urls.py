@@ -30,4 +30,11 @@ urlpatterns = [
     path('sub_category/', views.sub_category, name="sub_category"),
 
     # learning portal urls end here 
+
+
+
+    # job portal starts here
+    path('job-portal/all-jobs/', views.all_jobs, name="all_jobs")
+
+    # job portal ends here
 ]

@@ -10,6 +10,8 @@ from . models import (
     Category,
     Sub_Category,
     Comment,
+    Job,
+    JobCategory
 )
 
 from django.contrib.auth.models import User
@@ -121,5 +123,33 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
         # depth = 1 
+
+
+
+
+class JobCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobCategory
+        fields = '__all__'
+
+
+class JobSerializer(serializers.ModelSerializer):
+    categories = serializers.SerializerMethodField("get_category")
+
+    def get_category(self,obj):
+        cats = obj.category.all()
+        serializer = JobCategorySerializer(cats, many=True)
+        return serializer.data
+
+
+    class Meta:
+        model = Job
+        fields = '__all__'
+
+
+    
+
+
+
 
 

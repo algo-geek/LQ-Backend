@@ -8,6 +8,8 @@ from . models import (
     Category,
     Sub_Category,
     Comment,
+    Job,
+    JobCategory
 )
 
 # Register your models here.
@@ -19,3 +21,5 @@ admin.site.register(Laws)
 admin.site.register(Category)
 admin.site.register(Sub_Category)
 admin.site.register(Comment)
+admin.site.register(Job)
+admin.site.register(JobCategory)

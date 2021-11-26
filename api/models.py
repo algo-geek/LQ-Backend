@@ -51,6 +51,9 @@ class Comment(models.Model):
 
 # social media part ends here
 
+
+
+
 class News(models.Model):
     headline = models.CharField(max_length=300)
     content = models.TextField()
@@ -86,6 +89,44 @@ class Category(models.Model):
 
 
 
+# job portal stats here
+
+class JobCategory(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.TextField()
+    
+    def __str__(self):
+        return self.name
+
+
+
+
+
+
+
+
+class Job(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    company = models.CharField(max_length=100)
+    isOpen = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    min_experience = models.IntegerField(default=0)
+    max_experience = models.IntegerField(default=10)
+    category = models.ManyToManyField(JobCategory, related_name='job_category')
+    salary_ctc = models.IntegerField()
+    age_limit = models.IntegerField(default=40)
+    isRemote = models.BooleanField(default=False)
+    hirer = models.ForeignKey(Profile, on_delete= models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+
+
+
+
+# job portal ends here
 
 
 
