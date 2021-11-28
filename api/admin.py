@@ -6,7 +6,7 @@ from . models import (
     News,
     Laws,
     Category,
-    Sub_Category,
+    Content,
     Comment,
     Job,
     JobCategory
@@ -19,7 +19,7 @@ admin.site.register(Happy)
 admin.site.register(News)
 admin.site.register(Laws)
 admin.site.register(Category)
-admin.site.register(Sub_Category)
+admin.site.register(Content)
 admin.site.register(Comment)
 admin.site.register(Job)
 admin.site.register(JobCategory)

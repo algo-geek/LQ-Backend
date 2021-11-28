@@ -24,10 +24,10 @@ urlpatterns = [
 
     # learning portal urls start here 
     
-    path('news/', views.news, name="news"),
-    path('laws/', views.laws, name="laws"),
-    path('unaware/', views.unaware, name="unaware"),
-    path('sub_category/', views.sub_category, name="sub_category"),
+    path('learning/news/', views.news, name="news"),
+    path('learning/laws/', views.laws, name="laws"),
+    path('learning/unaware/', views.unaware, name="unaware"),
+    path('learning/contents/<int:id>/', views.filtered_contents, name="filtered_contents"),
 
     # learning portal urls end here 
 
@@ -38,6 +38,7 @@ urlpatterns = [
     path('job-portal/filtered-jobs/<str:category>/', views.filtered_jobs, name="filtered_jobs"),
     path("job-portal/job/<int:id>/", views.job, name="job"),
     path('job-portal/job-categories/', views.job_categories, name="job_categories"),
+    path('job-portal/add-job/', views.add_job, name="add_job"),
 
     # job portal ends here
 ]

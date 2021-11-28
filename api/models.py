@@ -70,18 +70,18 @@ class Laws(models.Model):
         return "law : " + str(self.law) + " des : " + str(self.des)        
 
 
-class Sub_Category(models.Model):
-    sub_category = models.CharField(max_length=100)
-    sub_category_des = models.TextField()
+class Content(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
 
     def __str__(self):
-        return " sub_category : " + str(self.sub_category) + " sub_category_description : " + str(self.sub_category_des) 
+        return "title : " + str(self.title) + "description : " + str(self.description) 
 
 
 class Category(models.Model):
     category_name = models.CharField(max_length=100)
     category_des = models.TextField()
-    sub_category = models.ManyToManyField(Sub_Category, related_name="subcategory")
+    content = models.ManyToManyField(Content, related_name="content")
 
     def __str__(self):
         return " category_name : " + str(self.category_name) + " category_description : " + str(self.category_des) 

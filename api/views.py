@@ -11,7 +11,7 @@ from . models import (
     Happy,
     Laws,
     Category,
-    Sub_Category,
+    Content,
     Comment,
     Job,
     JobCategory
@@ -24,7 +24,7 @@ from . serializers import (
     NewsSerializer,
     LawsSerializer,
     CategorySerializer,
-    Sub_CategorySerializer,
+    ContentSerializer,
     CommentSerializer,
     JobSerializer,
     JobCategorySerializer
@@ -233,10 +233,17 @@ def unaware(request):
 
 
 @api_view(['GET'])
-def sub_category(request):
-    sub_category = Sub_Category.objects.all()
-    serializer = Sub_CategorySerializer(sub_category, many=True)
+def filtered_contents(request,id):
+    cat_obj = get_object_or_404(Category, id=id)
+    contents = cat_obj.content.all()
+    serializer = ContentSerializer(contents, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK) 
+
+
+
+
+
+
 
 
 
@@ -269,6 +276,21 @@ def job_categories(request):
     serializer = JobCategorySerializer(categories, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_job(request):
+    data = request.data
+    user_obj = request.user
+    prof_obj = user_obj.profile
+    data['hirer']= prof_obj.id
+    serializer = JobSerializer(data=data)
+    print(data)
+
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

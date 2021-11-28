@@ -8,7 +8,7 @@ from . models import (
     News,
     Laws,
     Category,
-    Sub_Category,
+    Content,
     Comment,
     Job,
     JobCategory
@@ -108,16 +108,21 @@ class LawsSerializer(serializers.ModelSerializer):
         # depth = 1       
 
 
-class Sub_CategorySerializer(serializers.ModelSerializer):
+class ContentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Sub_Category
+        model = Content
         fields = '__all__'
         # depth = 1 
         
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    sub_category = Sub_CategorySerializer(many=True)
+    text_content = serializers.SerializerMethodField("get_content")
+
+    def get_content(self,obj):
+        text_content = obj.content.all()
+        serializer = ContentSerializer(text_content, many=True)
+        return serializer.data
 
     class Meta:
         model = Category
